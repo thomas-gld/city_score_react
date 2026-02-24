@@ -1,7 +1,11 @@
-import { FormCategories } from "./components/FormCategories"
+import FormCategories from "./components/FormCategories"
+import FormEstImportant from "./components/FormEstImportant"
 
 function App() {
-  return <FormCategories/>
+  return <> 
+    <FormCategories/>
+    <FormEstImportant/>
+    </>
 }
 
 export default App
