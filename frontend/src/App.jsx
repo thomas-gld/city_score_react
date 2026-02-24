@@ -7,8 +7,8 @@ function App() {
   return <> 
     <FormCategories/>
     <FormEstImportant/>
-    <FormCriteres/>
     <FormLieux/>
+    <FormCriteres/>
     </>
 }
 
