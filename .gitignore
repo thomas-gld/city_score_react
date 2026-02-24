@@ -1,7 +1,7 @@
 node_modules/
 .env
 .venv/
-__pycach__/
+__pycache__/
 *.pyc
 dist/
 ~       
