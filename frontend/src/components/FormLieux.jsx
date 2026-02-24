@@ -1,6 +1,10 @@
 // Q2
 import { useState } from "react"
 
+function handleNext(){
+    return
+}
+
 export default function FormLieux(){
     const [selected, setSelected] = useState(null)
     return (
@@ -27,6 +31,9 @@ export default function FormLieux(){
                             Les deux
                     </button>
                 </div>
+                <div>
+                    <button onClick={handleNext} className="mt-20 bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer text-black text-3xl font-serif font-bold border-2 border-yellow-300 m-5 p-6 rounded-xl shadow-lg/10">Suivant</button>
+                 </div>
 
             </div>
         </>
