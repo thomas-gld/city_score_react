@@ -8,15 +8,15 @@ export default function Register(){
     const [formData, setFormData] = useState ({
         userName:"",
         password:"",
-        pssword2:"",
+        password2:"",
     });
 
     const handleChange = (e)=> {
-        setForDate({...formData, [e.target.id]: e.target.value});
+        setFormData({...formData, [e.target.id]: e.target.value});
     };
 
     async function handleRegister(e) {
-        e.preventDafault();
+        e.preventDefault();
 
         if (formData.password !== formData.password2) {
             alert("Les mots de passe ne correspondent pas"); 
