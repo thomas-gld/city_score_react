@@ -1,7 +1,9 @@
 // Q6
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function FormEstImportant() {  
+    const navigate = useNavigate()
     const categories = ["Espaces vert", "Restaurants", "Bars", "Lieux de santé", "Commerces", "Industries"]
     const [importantChoice, setImportantChoice] = useState({})
 
@@ -14,6 +16,7 @@ export default function FormEstImportant() {
 
     function handleNext() {
         console.log(importantChoice)
+        navigate('/resultats')
     }
     
     return <>

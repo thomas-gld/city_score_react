@@ -1,8 +1,10 @@
 // Q3
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 export default function FormLoisirs() {
+    const navigate = useNavigate()
     const categories = ["Opéra", "Football", "Cinéma", "Rugby", "Théatre", "Musée",
                         "Surf", "Œnologie", "Lecture", "Promenade", "Natation", 
                         "Course à pied", "Tennis", "Musique"
@@ -16,6 +18,7 @@ export default function FormLoisirs() {
 
     function handleNext() {
         console.log(categoriesChoice)
+        navigate('/meteo')
     }
     
     return <>
