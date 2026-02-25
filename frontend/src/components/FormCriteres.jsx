@@ -1,15 +1,19 @@
 // Q1
 
+function handleNext(){
+
+}
+
 export default function FormCriteres(){
     return (
         <>
             <div className="min-h-screen bg-linear-to-tr from-purple-200 to-purple-800 flex flex-col items-center gap-3">
-                <h1>Quels critères t'importent le plus ? </h1>
+                <h1 className="text-2xl font-bold text-white">Quels critères t'importent le plus ? </h1>
 
                 <div className="flex justify-between gap-3 ms-20">
-                    <p>Pas important</p>
-                    <p>Égal</p>
-                    <p>Très important</p>
+                    <p className="text-sm font-medium text-purple-900 border border-purple-400 bg-white/30 rounded-full px-3 py-1 backdrop-blur-sm">Pas important</p>
+                    <p className="text-sm font-medium text-purple-900 border border-purple-400 bg-white/30 rounded-full px-3 py-1 backdrop-blur-sm">Égal</p>
+                    <p className="text-sm font-medium text-purple-900 border border-purple-400 bg-white/30 rounded-full px-3 py-1 backdrop-blur-sm">Très important</p>
                 </div>
 
                 <div className="flex flex-col items-center justify-between gap-6">
@@ -41,6 +45,10 @@ export default function FormCriteres(){
                         <label htmlFor="pollution" className="text-right">Pollution :</label>
                         <input type="range" id="climat" name="climat" min="0" max="100" defaultValue="50" className="flex-1"/>
                     </div>
+                </div>
+
+                <div>
+                    <button onClick={handleNext} className="mt-20 bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer text-black text-3xl font-serif font-bold border-2 border-yellow-300 m-5 p-6 rounded-xl shadow-lg/10">Suivant</button>
                 </div>
             </div>
         </>
