@@ -1,12 +1,16 @@
 // Q2
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-function handleNext(){
-    return
-}
+
 
 export default function FormLieux(){
     const [selected, setSelected] = useState(null)
+    const navigate = useNavigate()
+
+    function handleNext(){
+        navigate('/loisirs')  
+    }
     return (
         <>
             <div className="min-h-screen bg-linear-to-tr from-purple-200 to-purple-800 flex flex-col items-center gap-3">

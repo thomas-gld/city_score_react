@@ -1,10 +1,12 @@
 // Q1
-
-function handleNext(){
-
-}
+import { useNavigate } from "react-router-dom"
 
 export default function FormCriteres(){
+    const navigate = useNavigate()
+
+    function handleNext(){
+        navigate('/lieux')
+    }
     return (
         <>
             <div className="min-h-screen bg-linear-to-tr from-purple-200 to-purple-800 flex flex-col items-center gap-3">

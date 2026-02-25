@@ -62,8 +62,11 @@ class Lieux(models.Model):
     nb_restaurants = models.IntegerField()
     nb_soins = models.IntegerField()
     nb_parcs = models.IntegerField()
+    
 
-
+class Users(models.Model): 
+    name = models.CharField(max_length=30)
+    password = models.CharField(max_length=30)
 class Users(models.Model): 
     name = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
