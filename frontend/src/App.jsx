@@ -4,15 +4,13 @@ import FormCategories from "./components/FormCategories"
 import FormEstImportant from "./components/FormEstImportant"
 import FormLoisirs from "./components/FormLoisir";
 import FormMeteo  from "./components/FormMeteo";
+import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   return <> 
-    <FormCategories/>
-    <FormEstImportant/>
-    <FormLieux/>
-    <FormCriteres/>
-    <FormLoisirs/>
-    <FormMeteo/>
+    <Login/>
+    <Register/>
     </>
 }
 
