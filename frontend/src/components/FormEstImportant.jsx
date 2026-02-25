@@ -1,11 +1,13 @@
 // Q6
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useGlobalState } from "../GlobalState"
 
 export default function FormEstImportant() {  
     const navigate = useNavigate()
     const categories = ["Espaces vert", "Restaurants", "Bars", "Lieux de santé", "Commerces", "Industries"]
     const [importantChoice, setImportantChoice] = useState({})
+    const {setImportant} = useGlobalState()
 
     const categoriesSliders = categories.map(c => {
         return (<div className="mb-7">
@@ -15,6 +17,7 @@ export default function FormEstImportant() {
     })
 
     function handleNext() {
+        setImportant(importantChoice)
         console.log(importantChoice)
         navigate('/resultats')
     }
