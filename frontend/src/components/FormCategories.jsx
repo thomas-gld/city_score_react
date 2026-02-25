@@ -1,8 +1,10 @@
 // Q5
 
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function FormCategories() {
+    const navigate = useNavigate()
     const categories = ["Etudiants", "Actifs", "Retraités", "Autres"]
     const [categoriesChoice, setCategoriesChoice] = useState([])
 
@@ -12,6 +14,7 @@ export default function FormCategories() {
 
     function handleNext() {
         console.log(categoriesChoice)
+        navigate('/est-important')
     }
     
     return <>

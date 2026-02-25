@@ -1,12 +1,15 @@
 // Q4
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function FormMeteo() {
+  const navigate = useNavigate()
   const [sunValue, setSunValue] = useState(50);
   const [heatValue, setHeatValue] = useState(50);
 
   function handleNext() {
     console.log({ sunValue, heatValue });
+    navigate('/categories')
     
   }
 
