@@ -7,6 +7,7 @@ function goLogin(){
 }
 
 export default function Register(){
+   
     return (
         <>
         <div className="min-h-screen bg-linear-to-tr from-purple-200 to-purple-800 flex flex-col items-center font-serif leading-relaxed font-bold text-purple-900">

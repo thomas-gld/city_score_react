@@ -1,14 +1,14 @@
 from api.models import Ville
 
 
-def makeCityScore(cityList):
-    cityScore = {}
-    for city in cityList:
-        cityScore[city] = 50
-    return cityScore
+def make_city_score(city_list):
+    city_score = {}
+    for city in city_list:
+        city_score[city] = 50
+    return city_score
 
 
-def handleQ1(cityScoreTab, criteres):
+def handle_q1(city_score_tab, criteres):
 
     villes = (
         Ville.objects
@@ -26,75 +26,75 @@ def handleQ1(cityScoreTab, criteres):
         # ---------------- CLIMAT
         if climat:
             if 20 <= climat.temp_max <= 30:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     10 * criteres["climatValue"] / 100
                 )
 
             if climat.temp_min <= 10:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     10 * criteres["climatValue"] / 100
                 )
 
             if climat.temp_max >= 30:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     10 * criteres["climatValue"] / 100
                 )
 
         # ---------------- CULTURE
         if loisir:
             if loisir.nb_theatre >= 5:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     5 * criteres["cultureValue"] / 100
                 )
             else:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     5 * criteres["cultureValue"] / 100
                 )
 
             if loisir.nb_musee >= 5:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     5 * criteres["cultureValue"] / 100
                 )
             else:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     5 * criteres["cultureValue"] / 100
                 )
 
         # ---------------- LOISIRS
         if loisir and lieux:
             if loisir.nb_theatre >= 5:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     5 * criteres["loisirValue"] / 100
                 )
             else:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     5 * criteres["loisirValue"] / 100
                 )
 
             if lieux.nb_bars >= 50:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     5 * criteres["loisirValue"] / 100
                 )
             else:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     5 * criteres["loisirValue"] / 100
                 )
 
         # ---------------- SANTÉ
         if lieux:
             if lieux.nb_soins >= 5:
-                cityScoreTab[ville.name] += (
+                city_score_tab[ville.name] += (
                     10 * criteres["santeValue"] / 100
                 )
             else:
-                cityScoreTab[ville.name] -= (
+                city_score_tab[ville.name] -= (
                     10 * criteres["santeValue"] / 100
                 )
 
-    return cityScoreTab
+    return city_score_tab
 
 
-def handleQ2(cityScoreTab, lieux):
+def handle_q2(city_score_tab, lieux):
 
     villes = (
         Ville.objects
@@ -112,256 +112,245 @@ def handleQ2(cityScoreTab, lieux):
         if lieux in ["mer", "both"]:
 
             if localisation.dist_mer < 50:
-                cityScoreTab[ville.name] += 10
+                city_score_tab[ville.name] += 10
 
             elif 50 <= localisation.dist_mer < 100:
-                cityScoreTab[ville.name] += 5
+                city_score_tab[ville.name] += 5
 
             elif 100 <= localisation.dist_mer < 200:
-                cityScoreTab[ville.name] -= 5
+                city_score_tab[ville.name] -= 5
 
             else:  # >= 200
-                cityScoreTab[ville.name] -= 10
+                city_score_tab[ville.name] -= 10
 
         # ---------------- MONTAGNE
         if lieux in ["montagne", "both"]:
 
             if localisation.dist_montagne < 50:
-                cityScoreTab[ville.name] += 10
+                city_score_tab[ville.name] += 10
 
             elif 50 <= localisation.dist_montagne < 100:
-                cityScoreTab[ville.name] += 5
+                city_score_tab[ville.name] += 5
 
             elif 100 <= localisation.dist_montagne < 200:
-                cityScoreTab[ville.name] -= 5
+                city_score_tab[ville.name] -= 5
 
             else:  # >= 200
-                cityScoreTab[ville.name] -= 10
+                city_score_tab[ville.name] -= 10
 
-    return cityScoreTab
+    return city_score_tab
 
 
-
-def handleQ3(cityScoreTab, meteo):
+def handle_q3(city_score_tab, meteo):
     villes = (
         Ville.objects
         .select_related("climat")
         .all()
     )
 
-    tempMoy = []
+    temp_moy = []
     for ville in villes:
         climat = getattr(ville, "climat", None)
         if not climat:
             continue
         moy = (climat.temp_max + climat.temp_min) / 2
-        tempMoy.append(moy)
+        temp_moy.append(moy)
 
-    mintempMoy = min(tempMoy)
-    maxtempMoy = max(tempMoy)
-    tempMoyRange = maxtempMoy - mintempMoy
-    if tempMoyRange == 0:  
-        tempMoyRange = 1  # éviter la division par zéro au cas où le range = 0
+    min_temp_moy = min(temp_moy)
+    max_temp_moy = max(temp_moy)
+    temp_moy_range = max_temp_moy - min_temp_moy
+    if temp_moy_range == 0:
+        temp_moy_range = 1  # éviter la division par zéro au cas où le range = 0
 
-    heatValueNormalized = meteo["heatValue"] / 100
+    heat_value_normalized = meteo["heatValue"] / 100
 
     for ville in villes:
         climat = getattr(ville, "climat", None)
         if not climat:
             continue
 
-        tempMoyVille = (climat.temp_max + climat.temp_min) / 2
-        tempNormalized = (tempMoyVille - mintempMoy) / tempMoyRange
-        distance = abs(tempNormalized - heatValueNormalized)
+        temp_moy_ville = (climat.temp_max + climat.temp_min) / 2
+        temp_normalized = (temp_moy_ville - min_temp_moy) / temp_moy_range
+        distance = abs(temp_normalized - heat_value_normalized)
         weight = 10 * (1 - distance)
 
-        cityScoreTab[ville.name] += weight
+        city_score_tab[ville.name] += weight
 
-    return cityScoreTab
-
-
+    return city_score_tab
 
 
-def handleQ4(cityScoreTab, meteo):
+def handle_q4(city_score_tab, meteo):
     villes = (
         Ville.objects
         .select_related("climat")
         .all()
     )
-    sunHours = []
+    sun_hours = []
     for ville in villes:
         climat = getattr(ville, "climat", None)
         if not climat:
             continue
-        sunHours.append(climat.sun_hours)
+        sun_hours.append(climat.sun_hours)
 
-    if not sunHours:
-        return cityScoreTab
+    if not sun_hours:
+        return city_score_tab
 
-    minSun = min(sunHours)
-    maxSun = max(sunHours)
-    sunRange = maxSun - minSun
-    if sunRange == 0:
-        sunRange = 1
+    min_sun = min(sun_hours)
+    max_sun = max(sun_hours)
+    sun_range = max_sun - min_sun
+    if sun_range == 0:
+        sun_range = 1
 
-    sunValueNormalized = meteo["sunValue"] / 100
+    sun_value_normalized = meteo["sunValue"] / 100
 
     for ville in villes:
         climat = getattr(ville, "climat", None)
         if not climat:
             continue
 
-        sunNormalized = (climat.sun_hours - minSun) / sunRange
-        distance = abs(sunNormalized - sunValueNormalized)
+        sun_normalized = (climat.sun_hours - min_sun) / sun_range
+        distance = abs(sun_normalized - sun_value_normalized)
         weight = 10 * (1 - distance)
 
-        cityScoreTab[ville.name] += weight
+        city_score_tab[ville.name] += weight
 
-    return cityScoreTab
-
-
+    return city_score_tab
 
 
-def handleQ5(cityScoreTab, userPref5):
+def handle_q5(city_score_tab, user_pref5):
 
     villes = Ville.objects.order_by("age").all()  # Trier les villes par âge croissant
 
     if not villes:
-        return cityScoreTab
+        return city_score_tab
 
-    villePlusJeune = villes[0]
-    villePlusVielle = villes[len(villes) - 1]
+    ville_plus_jeune = villes[0]
+    ville_plus_vielle = villes[len(villes) - 1]
 
-    if userPref5 == "etudiant":
-        cityScoreTab[villePlusJeune.name] += 5
+    if user_pref5 == "etudiant":
+        city_score_tab[ville_plus_jeune.name] += 5
 
-    elif userPref5 == "retraite":
-        cityScoreTab[villePlusVielle.name] += 5
+    elif user_pref5 == "retraite":
+        city_score_tab[ville_plus_vielle.name] += 5
 
-    elif userPref5 == "actif":
+    elif user_pref5 == "actif":
         for ville in villes:
             if 21 <= ville.age <= 60:
-                cityScoreTab[ville.name] += 2
+                city_score_tab[ville.name] += 2
 
-    elif userPref5 == "autres":
+    elif user_pref5 == "autres":
         for ville in villes:
             if 21 <= ville.age <= 45:
-                cityScoreTab[ville.name] += 2
+                city_score_tab[ville.name] += 2
 
-    return cityScoreTab
-
-
+    return city_score_tab
 
 
-
-
-def handleQ6(cityScoreTab, userPref6):
+def handle_q6(city_score_tab, user_pref6):
     villes = Ville.objects.select_related("lieux").all()
 
     # ----------------- Espaces verts (parcs)
     parcs = [getattr(v.lieux, "nb_parcs", 0) for v in villes if hasattr(v, "lieux")]
     if parcs:
-        minParcs = min(parcs)
-        maxParcs = max(parcs)
-        parcsRange = maxParcs - minParcs
-        if parcsRange == 0:
-            parcsRange = 1
+        min_parcs = min(parcs)
+        max_parcs = max(parcs)
+        parcs_range = max_parcs - min_parcs
+        if parcs_range == 0:
+            parcs_range = 1
 
-        espaceVertNormalized = userPref6["espaceVertValue"] / 100
+        espace_vert_normalized = user_pref6["espaceVertValue"] / 100
 
         for ville in villes:
             lieux = getattr(ville, "lieux", None)
             if not lieux:
                 continue
-            parcsNormalized = (lieux.nb_parcs - minParcs) / parcsRange
-            distance = abs(parcsNormalized - espaceVertNormalized)
+            parcs_normalized = (lieux.nb_parcs - min_parcs) / parcs_range
+            distance = abs(parcs_normalized - espace_vert_normalized)
             weight = 10 * (1 - distance)
-            cityScoreTab[ville.name] += weight
+            city_score_tab[ville.name] += weight
 
     # -----------------Restaurants
     restaurants = [getattr(v.lieux, "nb_restaurants", 0) for v in villes if hasattr(v, "lieux")]
     if restaurants:
-        minRestaurants = min(restaurants)
-        maxRestaurants = max(restaurants)
-        restaurantsRange = maxRestaurants - minRestaurants
-        if restaurantsRange == 0:
-            restaurantsRange = 1
+        min_restaurants = min(restaurants)
+        max_restaurants = max(restaurants)
+        restaurants_range = max_restaurants - min_restaurants
+        if restaurants_range == 0:
+            restaurants_range = 1
 
-        restaurantNormalized = userPref6["restaurantValue"] / 100
+        restaurant_normalized = user_pref6["restaurantValue"] / 100
 
         for ville in villes:
             lieux = getattr(ville, "lieux", None)
             if not lieux:
                 continue
-            restaurantsNormalized = (lieux.nb_restaurants - minRestaurants) / restaurantsRange
-            distance = abs(restaurantsNormalized - restaurantNormalized)
+            restaurants_normalized = (lieux.nb_restaurants - min_restaurants) / restaurants_range
+            distance = abs(restaurants_normalized - restaurant_normalized)
             weight = 10 * (1 - distance)
-            cityScoreTab[ville.name] += weight
+            city_score_tab[ville.name] += weight
 
     # -----------------Bars
     bars = [getattr(v.lieux, "nb_bars", 0) for v in villes if hasattr(v, "lieux")]
     if bars:
-        minBars = min(bars)
-        maxBars = max(bars)
-        barsRange = maxBars - minBars
-        if barsRange == 0:
-            barsRange = 1
+        min_bars = min(bars)
+        max_bars = max(bars)
+        bars_range = max_bars - min_bars
+        if bars_range == 0:
+            bars_range = 1
 
-        barNormalized = userPref6["barValue"] / 100
+        bar_normalized = user_pref6["barValue"] / 100
 
         for ville in villes:
             lieux = getattr(ville, "lieux", None)
             if not lieux:
                 continue
-            barsNormalized = (lieux.nb_bars - minBars) / barsRange
-            distance = abs(barsNormalized - barNormalized)
+            bars_normalized = (lieux.nb_bars - min_bars) / bars_range
+            distance = abs(bars_normalized - bar_normalized)
             weight = 10 * (1 - distance)
-            cityScoreTab[ville.name] += weight
+            city_score_tab[ville.name] += weight
 
     # -----------------Lieux de santé
     soins = [getattr(v.lieux, "nb_soins", 0) for v in villes if hasattr(v, "lieux")]
     if soins:
-        minSoins = min(soins)
-        maxSoins = max(soins)
-        soinsRange = maxSoins - minSoins
-        if soinsRange == 0:
-            soinsRange = 1
+        min_soins = min(soins)
+        max_soins = max(soins)
+        soins_range = max_soins - min_soins
+        if soins_range == 0:
+            soins_range = 1
 
-        santeNormalized = userPref6["santeValue"] / 100
+        sante_normalized = user_pref6["santeValue"] / 100
 
         for ville in villes:
             lieux = getattr(ville, "lieux", None)
             if not lieux:
                 continue
-            soinsNormalized = (lieux.nb_soins - minSoins) / soinsRange
-            distance = abs(soinsNormalized - santeNormalized)
+            soins_normalized = (lieux.nb_soins - min_soins) / soins_range
+            distance = abs(soins_normalized - sante_normalized)
             weight = 10 * (1 - distance)
-            cityScoreTab[ville.name] += weight
+            city_score_tab[ville.name] += weight
 
-    return cityScoreTab
-
-
+    return city_score_tab
 
 
-def rankCity(cityList, userPref):
-    cityScoreTab = makeCityScore(cityList)
+def rank_city(city_list, user_pref):
+    city_score_tab = make_city_score(city_list)
 
-    handleQ1(cityScoreTab, userPref["criteres"])
-    print("Q1:", cityScoreTab)
+    handle_q1(city_score_tab, user_pref["criteres"])
+    print("Q1:", city_score_tab)
 
-    handleQ2(cityScoreTab, userPref["lieux"])
-    print("Q2:", cityScoreTab)
+    handle_q2(city_score_tab, user_pref["lieux"])
+    print("Q2:", city_score_tab)
 
-    handleQ3(cityScoreTab, userPref["meteo"])
-    print("Q3:", cityScoreTab)
+    handle_q3(city_score_tab, user_pref["meteo"])
+    print("Q3:", city_score_tab)
 
-    handleQ4(cityScoreTab, userPref["meteo"])
-    print("Q4:", cityScoreTab)
+    handle_q4(city_score_tab, user_pref["meteo"])
+    print("Q4:", city_score_tab)
 
-    handleQ5(cityScoreTab, userPref["categories"])
-    print("Q5:", cityScoreTab)
+    handle_q5(city_score_tab, user_pref["categories"])
+    print("Q5:", city_score_tab)
 
-    handleQ6(cityScoreTab, userPref["important"])
-    print("Q6:", cityScoreTab)
+    handle_q6(city_score_tab, user_pref["important"])
+    print("Q6:", city_score_tab)
 
-    return cityScoreTab
+    return city_score_tab
