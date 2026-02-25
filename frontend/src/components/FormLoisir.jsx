@@ -1,6 +1,7 @@
 // Q3
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useGlobalState } from "../GlobalState"
 
 
 export default function FormLoisirs() {
@@ -12,12 +13,15 @@ export default function FormLoisirs() {
 
     const [categoriesChoice, setCategoriesChoice] = useState([])
 
+    const {setLoisir} = useGlobalState()
+
     const categoriesSelect = categories.map(c => {
         return <button key={c} onClick={() => categoriesChoice.includes(c) ? setCategoriesChoice(categoriesChoice.filter(el => el !== c)) : setCategoriesChoice([...categoriesChoice, c])} className={`hover:cursor-pointer text-xl font-serif font-bold border-2 m-5 p-3 rounded-xl transition-all duration-200 ${categoriesChoice.includes(c) ? "bg-yellow-400 border-yellow-600 text-purple-900 scale-105 shadow-lg" : "bg-yellow-100 border-yellow-300 text-black hover:bg-yellow-200"}`}>{c}</button>
     })
 
     function handleNext() {
         console.log(categoriesChoice)
+        setLoisir(categoriesChoice)
         navigate('/meteo')
     }
     

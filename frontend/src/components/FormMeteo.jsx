@@ -1,16 +1,19 @@
 // Q4
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGlobalState } from "../GlobalState"
 
 export default function FormMeteo() {
   const navigate = useNavigate()
   const [sunValue, setSunValue] = useState(50);
   const [heatValue, setHeatValue] = useState(50);
 
+  const {setMeteo} = useGlobalState();
+
   function handleNext() {
     console.log({ sunValue, heatValue });
-    navigate('/categories')
-    
+    setMeteo({ sunValue, heatValue})
+    navigate('/categories') 
   }
 
   return (

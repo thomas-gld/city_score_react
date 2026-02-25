@@ -1,14 +1,17 @@
 // Q2
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-
+import { useGlobalState } from "../GlobalState"
 
 
 export default function FormLieux(){
     const [selected, setSelected] = useState(null)
     const navigate = useNavigate()
+    const { setLieux } = useGlobalState()
 
     function handleNext(){
+        if (!selected) return
+        setLieux(selected)
         navigate('/loisirs')  
     }
     return (
@@ -36,7 +39,19 @@ export default function FormLieux(){
                     </button>
                 </div>
                 <div>
-                    <button onClick={handleNext} className="mt-20 bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer text-black text-3xl font-serif font-bold border-2 border-yellow-300 m-5 p-6 rounded-xl shadow-lg/10">Suivant</button>
+                    <button 
+                        onClick={handleNext} 
+                        disabled={!selected} 
+                        className={`mt-20 text-black text-3xl font-serif font-bold border-2 m-5 p-6 rounded-xl shadow-lg/10
+                            ${!selected
+                            ? "bg-gray-300 border-gray-400 cursor-not-allowed"
+                            : "bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer border-yellow-300"
+                            }
+                        `}
+                        >
+                        Suivant
+                        </button>
+                    
                  </div>
 
             </div>
