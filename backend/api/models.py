@@ -67,6 +67,7 @@ class Lieux(models.Model):
 class Users(models.Model): 
     name = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
+    
 class Users(models.Model): 
     name = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
