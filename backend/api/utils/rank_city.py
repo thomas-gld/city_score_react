@@ -218,8 +218,9 @@ def handle_q4(city_score_tab, meteo):
 
 
 def handle_q5(city_score_tab, user_pref5):
+    # user_pref5 est un tableau de catégories, ex: ["etudiant", "actif"]
 
-    villes = Ville.objects.order_by("age").all()  # Trier les villes par âge croissant
+    villes = Ville.objects.order_by("age").all()
 
     if not villes:
         return city_score_tab
@@ -227,21 +228,22 @@ def handle_q5(city_score_tab, user_pref5):
     ville_plus_jeune = villes[0]
     ville_plus_vielle = villes[len(villes) - 1]
 
-    if user_pref5 == "etudiant":
-        city_score_tab[ville_plus_jeune.name] += 5
+    for cat in user_pref5:
+        if cat == "etudiant":
+            city_score_tab[ville_plus_jeune.name] += 5
 
-    elif user_pref5 == "retraite":
-        city_score_tab[ville_plus_vielle.name] += 5
+        elif cat == "retraite":
+            city_score_tab[ville_plus_vielle.name] += 5
 
-    elif user_pref5 == "actif":
-        for ville in villes:
-            if 21 <= ville.age <= 60:
-                city_score_tab[ville.name] += 2
+        elif cat == "actif":
+            for ville in villes:
+                if 21 <= ville.age <= 60:
+                    city_score_tab[ville.name] += 2
 
-    elif user_pref5 == "autres":
-        for ville in villes:
-            if 21 <= ville.age <= 45:
-                city_score_tab[ville.name] += 2
+        elif cat == "autres":
+            for ville in villes:
+                if 21 <= ville.age <= 45:
+                    city_score_tab[ville.name] += 2
 
     return city_score_tab
 

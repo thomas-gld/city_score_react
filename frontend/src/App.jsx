@@ -8,6 +8,7 @@ import FormMeteo  from "./components/FormMeteo";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home"
+import Resultat from "./components/Resultat"
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/est-important" element={<FormEstImportant/>}/>
       <Route path="/loisirs" element={<FormLoisirs/>}/>
       <Route path="/meteo" element={<FormMeteo/>}/>
+      <Route path="/resultats" element={<Resultat/>}/>
     </Routes>
   )
 }

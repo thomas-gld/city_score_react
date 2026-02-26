@@ -20,20 +20,20 @@ export default function FormLieux(){
                 <h1 className="text-2xl font-bold text-white">Vers quel lieu souhaites-tu vivre ?</h1>
                 <div className="flex gap-2 bg-white/20 p-1 rounded-full">
                     <button 
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "Mer"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`} 
-                        onClick= {() => setSelected("Mer")}
+                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "mer"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`}
+                        onClick= {() => setSelected("mer")}
                         >
                             Mer
                     </button>
                     <button 
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "Montagne"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`} 
-                        onClick= {() => setSelected("Montagne")}
+                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "montagne"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`}
+                        onClick= {() => setSelected("montagne")}
                         >
                             Montagne
                     </button>
                     <button 
-                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "lesDeux"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`} 
-                        onClick= {() => setSelected("lesDeux")}
+                        className={`px-5 py-2 rounded-full font-medium transition-all duration-200${selected === "both"? "bg-white text-purple-800 shadow" : "text-white hover:bg-white/20"}`}
+                        onClick= {() => setSelected("both")}
                         >
                             Les deux
                     </button>

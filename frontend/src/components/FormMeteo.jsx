@@ -11,9 +11,8 @@ export default function FormMeteo() {
   const {setMeteo} = useGlobalState();
 
   function handleNext() {
-    console.log({ sunValue, heatValue });
-    setMeteo({ sunValue, heatValue})
-    navigate('/categories') 
+    setMeteo({ sunValue: Number(sunValue), heatValue: Number(heatValue) })
+    navigate('/categories')
   }
 
   return (

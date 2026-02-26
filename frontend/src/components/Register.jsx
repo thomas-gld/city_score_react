@@ -1,7 +1,6 @@
-// register 
+// register
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 export default function Register(){
     const navigate = useNavigate()
@@ -58,7 +57,7 @@ export default function Register(){
                         </div>
                         <div>
                             <label htmlFor="password">Mot de passe
-                                <br></br><input type="paswword" id="password" onChange={handleChange} className="border-2 border-black"/>
+                                <br></br><input type="password" id="password" onChange={handleChange} className="border-2 border-black"/>
                             </label>
                         </div>
                         <div>
@@ -70,6 +69,9 @@ export default function Register(){
                             <button type="submit" className="mt-5 bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer border-2 border-yellow-300 m-3 p-3 rounded-xl shadow-lg/10">S'inscrire</button>
                         </div>
                     </form>
+                    <div>
+                        <button onClick={() => navigate('/login')} className="mt-5 bg-yellow-100 hover:bg-linear-to-tr from-yellow-100 to-yellow-300 hover:cursor-pointer border-2 border-yellow-300 m-3 p-3 rounded-xl shadow-lg/10">Se connecter</button>
+                    </div>
             </div>
         </>
     )
