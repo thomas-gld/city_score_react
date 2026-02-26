@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Register(){
     const navigate = useNavigate()
     const [formData, setFormData] = useState ({
-        userName:"",
+        username:"",
         password:"",
         password2:"",
     });
@@ -28,13 +28,17 @@ export default function Register(){
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                username: formData.userName,
+                username: formData.username,
                 password: formData.password
             }),
         });
+
         const data = await response.json();
         console.log("data : ", data); 
+
+        navigate('/login/')
     }
+    
 
     return (
         <>
@@ -47,8 +51,8 @@ export default function Register(){
                 </h2>
                     <form onSubmit={handleRegister} className="shadow-lg/20 text-2xl m-10 p-5 border-yellow-400 border-2 rounded-2xl bg-linear-to-br from-white to-yellow-200 flex flex-col items-center gap-4">
                         <div>
-                            <label htmlFor="userName">Nom d'utilisateur
-                                <br></br><input type="text" id="userName" onChange={handleChange} className="border-2 border-black"/>
+                            <label htmlFor="username">Nom d'utilisateur
+                                <br></br><input type="text" id="username" onChange={handleChange} className="border-2 border-black"/>
                             </label>
                         </div>
                         <div>

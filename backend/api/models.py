@@ -63,11 +63,3 @@ class Lieux(models.Model):
     nb_soins = models.IntegerField()
     nb_parcs = models.IntegerField()
     
-
-class Users(models.Model): 
-    name = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=128)
-
-
-    def __str__(self):
-        return self.name
