@@ -9,6 +9,7 @@ import FormMeteo  from "./components/FormMeteo";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home"
+import Resultat from "./components/Resultat"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
       <Route path="/est-important" element={<ProtectedRoute><FormEstImportant/></ProtectedRoute>}/>
       <Route path="/loisirs" element={<ProtectedRoute><FormLoisirs/></ProtectedRoute>}/>
       <Route path="/meteo" element={<ProtectedRoute><FormMeteo/></ProtectedRoute>}/>
+      <Route path="/resultats" element={<ProtectedRoute><Resultat/></ProtectedRoute>}/>                       
     </Routes>
   )
 }

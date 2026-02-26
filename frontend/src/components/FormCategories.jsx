@@ -4,9 +4,16 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useGlobalState } from "../GlobalState"
 
+const CATEGORY_MAP = {
+    "Etudiants": "etudiant",
+    "Actifs": "actif",
+    "Retraités": "retraite",
+    "Autres": "autres",
+}
+
 export default function FormCategories() {
     const navigate = useNavigate()
-    const categories = ["Etudiants", "Actifs", "Retraités", "Autres"]
+    const categories = Object.keys(CATEGORY_MAP)
     const [categoriesChoice, setCategoriesChoice] = useState([])
 
     const { setCategories } = useGlobalState()
@@ -16,8 +23,8 @@ export default function FormCategories() {
     })
 
     function handleNext() {
-        if (categoriesChoice.length === 0) return  // bloquer si aucun choix
-        setCategories(categoriesChoice)
+        if (categoriesChoice.length === 0) return
+        setCategories(categoriesChoice.map(c => CATEGORY_MAP[c]))
         navigate('/est-important')
     }
     

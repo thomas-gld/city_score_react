@@ -25,7 +25,13 @@ export default function FormCriteres(){
     }
 
     function handleNext(){
-        setCriteres(formValues) // sauvegarde globale
+        setCriteres({
+            ...formValues,
+            climatValue: formValues.climat,
+            cultureValue: formValues.culture,
+            loisirValue: formValues.loisirs,
+            santeValue: formValues.sante,
+        })
         navigate('/lieux')
     }
 
