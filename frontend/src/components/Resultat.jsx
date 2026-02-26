@@ -1,18 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useGlobalState } from "../GlobalState";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 export default function Resultats() {
-  const { criteres, lieux, meteo, loisir, important, categories } = useGlobalState();
-  const [cityList, setCityList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { villes } = useGlobalState();
 
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
 
-  const userPrefs = { criteres, lieux, meteo, loisir, important, categories };
+  const cityList = Array.isArray(villes) ? villes : [];
 
   // Icônes Leaflet
   const defaultIcon = L.icon({
@@ -54,34 +51,9 @@ export default function Resultats() {
   // Formattage population
   const formatPopulation = (pop) => (pop ? pop.toLocaleString("fr-FR") : "N/A");
 
-  // Fetch API et initialisation de la carte
+  // Initialisation de la carte
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
-    const fetchResults = async () => {
-      try {
-        const response = await fetch("/api/process_results", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userPrefs),
-        });
-
-        if (!response.ok) throw new Error("Erreur API");
-
-        const data = await response.json();
-        setCityList(data);
-
-        if (data.length > 0) initMap(data);
-      } catch (err) {
-        console.error(err);
-        setError("Une erreur est survenue lors du chargement des résultats");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchResults();
+    if (cityList.length > 0) initMap(cityList);
   }, []);
 
   const initMap = (cities) => {
@@ -95,7 +67,9 @@ export default function Resultats() {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(mapRef.current);
 
-    cities.forEach((city, index) => {
+    const validCities = cities.filter((c) => c.latitude != null && c.longitude != null);
+
+    validCities.forEach((city, index) => {
       let icon = defaultIcon;
       if (index === 0) icon = goldIcon;
       else if (index === 1) icon = greyIcon;
@@ -110,8 +84,10 @@ export default function Resultats() {
         `);
     });
 
-    const bounds = L.latLngBounds(cities.map((c) => [c.latitude, c.longitude]));
-    mapRef.current.fitBounds(bounds, { padding: [40, 40] });
+    if (validCities.length > 0) {
+      const bounds = L.latLngBounds(validCities.map((c) => [c.latitude, c.longitude]));
+      mapRef.current.fitBounds(bounds, { padding: [40, 40] });
+    }
 
     // Légende
     const legend = L.control({ position: "bottomright" });
@@ -133,8 +109,7 @@ export default function Resultats() {
     window.open(`/ville-informations/${ville.name}`, "_blank");
   };
 
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>{error}</p>;
+  if (cityList.length === 0) return <p>Chargement...</p>;
 
   return (
     <div className="p-5">

@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Route, Routes, Navigate } from "react-router-dom"
 import ProtectedRoute from "./components/ProtectedRoute"
 import FormCriteres from "./components/FormCriteres"
@@ -13,6 +14,10 @@ import Resultat from "./components/Resultat"
 
 
 function App() {
+  useEffect(() => {
+    fetch("http://localhost:8000/api/csrf/", { credentials: "include" })
+  }, [])
+
   return (
     <Routes>
       {/* Pages publiques accessibles à tous */}
