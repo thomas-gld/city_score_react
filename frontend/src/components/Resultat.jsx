@@ -106,7 +106,7 @@ export default function Resultats() {
   };
 
   const goToVilleInfo = (ville) => {
-    window.open(`/ville-informations/${ville.name}`, "_blank");
+    window.open(`/ville_informations/${ville.name}`, "_blank");
   };
 
   if (cityList.length === 0) return <p>Chargement...</p>;
