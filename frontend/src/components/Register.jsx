@@ -14,6 +14,13 @@ export default function Register(){
         setFormData({...formData, [e.target.id]: e.target.value});
     };
 
+    function getCookie(name) {
+        return document.cookie
+            .split('; ')
+            .find(row => row.startsWith(name + '='))
+            ?.split('=')[1];
+    }
+
     async function handleRegister(e) {
         e.preventDefault();
 
@@ -26,6 +33,7 @@ export default function Register(){
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'X-CSRFToken': getCookie("csrftoken")
             },
             body: JSON.stringify({
                 username: formData.username,
@@ -44,7 +52,7 @@ export default function Register(){
         <>
         <div className="min-h-screen bg-linear-to-tr from-purple-200 to-purple-800 flex flex-col items-center font-serif leading-relaxed font-bold text-purple-900">
                 <h1 className="shadow-lg/20 text-5xl m-10 p-5 border-yellow-400 border-2 rounded-2xl bg-linear-to-br from-white to-yellow-200 font-serif leading-relaxed font-bold text-purple-900">
-                    City-Score
+                    City-Score {document.cookie["csrftoken"]}
                 </h1>
                 <h2 className="shadow-lg/20 text-2xl m-2 p-5 border-yellow-400 border-2 rounded-2xl bg-linear-to-br from-white to-yellow-200">
                     Créer un compte

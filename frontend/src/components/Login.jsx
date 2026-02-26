@@ -16,12 +16,20 @@ export default function Login(){
         setFormData({...formData, [e.target.id]: e.target.value});
     };
     
+    function getCookie(name) {
+        return document.cookie
+            .split('; ')
+            .find(row => row.startsWith(name + '='))
+            ?.split('=')[1];
+    }
+
     async function handleLogin(e) {
          e.preventDefault();
          const response = await fetch("/api/login/", { 
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'X-CSRFToken': getCookie("csrftoken")
             },
             credentials: "include",
             body: JSON.stringify(formData),
