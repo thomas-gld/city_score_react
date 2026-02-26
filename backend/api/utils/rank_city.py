@@ -156,6 +156,9 @@ def handle_q3(city_score_tab, meteo):
         moy = (climat.temp_max + climat.temp_min) / 2
         temp_moy.append(moy)
 
+    if not temp_moy:
+        return city_score_tab
+
     min_temp_moy = min(temp_moy)
     max_temp_moy = max(temp_moy)
     temp_moy_range = max_temp_moy - min_temp_moy
