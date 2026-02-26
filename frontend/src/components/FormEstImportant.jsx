@@ -36,6 +36,12 @@ export default function FormEstImportant() {
         )
     })
 
+    function getCsrfToken() {
+        return document.cookie.split("; ")
+            .find(row => row.startsWith("csrftoken="))
+            ?.split("=")[1]
+    }
+
     async function handleNext() {
         setImportant(importantChoice)
         const payload = {
@@ -47,7 +53,7 @@ export default function FormEstImportant() {
         }
         const response = await fetch("http://127.0.0.1:8000/api/cityscore/", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrfToken() },
             credentials: "include",
             body: JSON.stringify(payload),
         })
