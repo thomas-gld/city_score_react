@@ -15,7 +15,7 @@ export default function VilleInformations() {
   useEffect(() => {
     const fetchVilleInfos = async () => {
       try {
-        const response = await fetch("/api/ville_informations", {
+        const response = await fetch("/ville_informations", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

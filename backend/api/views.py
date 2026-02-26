@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .utils.rank_city import rank_city
-
+from django.http import JsonResponse
 
 
 #==================== CSRF ====================
@@ -106,3 +106,55 @@ def city_score(request):
     ]
 
     return Response(result, status=status.HTTP_200_OK)
+
+
+#==================== Ville informations =====================
+
+
+api_view(["POST"])
+def ville_informations(request):
+    villes = (
+    Ville.objects
+        .select_related("localisation", "climat", "lieux")
+        .prefetch_related("loisirs")
+        .all()
+        )
+    
+    city_list = []
+    for v in villes:
+        city_list.append({
+            "name": v.name,
+
+            "description": v.description,
+            "age": v.age,
+            "pop": v.pop,
+
+            "localisation": {
+                "lat": v.localisation.lat,
+                "lon": v.localisation.lon,
+            } if v.localisation else None,
+
+            "climat": {
+                "sun_hours": v.climat.sun_hours,
+                "temp_max": v.climat.temp_max,
+                "temp_min": v.climat.temp_min,
+            } if v.climat else None,
+
+            "lieux": {
+                "nb_soins": v.lieux.nb_soins,
+                "nb_parcs": v.lieux.nb_parcs,
+                "nb_restaurants": v.lieux.nb_restaurants,
+                "nb_bars": v.lieux.nb_bars,
+            } if v.lieux else None,
+
+            "loisirs": [
+                {
+                    "nb_theatre": l.nb_theatre,
+                    "nb_musee": l.nb_musee,
+                    "nb_gymnase": l.nb_gymnase,
+                }
+                for l in v.loisirs.all()
+            ]
+        })
+
+    return JsonResponse(city_list, safe=False)

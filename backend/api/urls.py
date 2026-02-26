@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import test, city_score, register, user_login, get_csrf
+from .views import test, city_score, register, user_login, get_csrf, ville_informations 
 
 urlpatterns = [
     path('register/', register),
@@ -7,4 +7,5 @@ urlpatterns = [
     path('cityscore/', city_score),
     path('login/', user_login),
     path('csrf/', get_csrf),
+    path("ville_informations", ville_informations),
 ]
