@@ -51,13 +51,17 @@ export default function FormEstImportant() {
             categories,
             important: importantChoice,
         }
-        const response = await fetch("http://127.0.0.1:8000/api/cityscore/", {
+        const response = await fetch("http://localhost:8000/api/cityscore/", {
             method: "POST",
             headers: { "Content-Type": "application/json", "X-CSRFToken": getCsrfToken() },
             credentials: "include",
             body: JSON.stringify(payload),
         })
-        if (!response.ok) return
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}))
+            console.error("Erreur API cityscore:", response.status, err)
+            return
+        }
         const data = await response.json()
         setVilles(data)
         navigate('/resultats')

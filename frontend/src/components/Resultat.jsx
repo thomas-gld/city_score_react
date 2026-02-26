@@ -9,8 +9,7 @@ export default function Resultats() {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
 
-  // Conversion du dict { nom: score } en tableau trié
-  const cityList = Object.entries(villes).map(([name, score]) => ({ name, score }));
+  const cityList = Array.isArray(villes) ? villes : [];
 
   // Icônes Leaflet
   const defaultIcon = L.icon({

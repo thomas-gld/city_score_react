@@ -2,13 +2,23 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
-from .models import Ville
+from django.views.decorators.csrf import ensure_csrf_cookie
+from .models import Ville, Localisation
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .utils.rank_city import rank_city
 
+
+
+#==================== CSRF ====================
+
+@ensure_csrf_cookie
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def get_csrf(request):
+    return Response({"detail": "CSRF cookie set"})
 
 
 #==================== Register ====================
@@ -80,6 +90,19 @@ def city_score(request):
 
     scores = rank_city(city_list, user_pref)
 
-    result = {city: round(score, 2) for city, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)}
+    locations = {
+        loc.ville.name: loc
+        for loc in Localisation.objects.select_related("ville").all()
+    }
+
+    result = [
+        {
+            "name": city,
+            "score": round(score, 2),
+            "latitude": locations[city].latitude if city in locations else None,
+            "longitude": locations[city].longitude if city in locations else None,
+        }
+        for city, score in sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    ]
 
     return Response(result, status=status.HTTP_200_OK)
