@@ -111,41 +111,44 @@ def city_score(request):
 #==================== Ville informations =====================
 
 
-api_view(["POST"])
+
+@api_view(["POST"])
 def ville_informations(request):
+
     villes = (
-    Ville.objects
+        Ville.objects
         .select_related("localisation", "climat", "lieux")
         .prefetch_related("loisirs")
         .all()
-        )
-    
+    )
     city_list = []
+
     for v in villes:
         city_list.append({
             "name": v.name,
-
             "description": v.description,
             "age": v.age,
             "pop": v.pop,
 
             "localisation": {
-                "lat": v.localisation.lat,
-                "lon": v.localisation.lon,
-            } if v.localisation else None,
+                "latitude": v.localisation.latitude,
+                "longitude": v.localisation.longitude,
+                "dist_mer": v.localisation.dist_mer,
+                "dist_montagne": v.localisation.dist_montagne,
+            } if hasattr(v, "localisation") else None,
 
             "climat": {
                 "sun_hours": v.climat.sun_hours,
                 "temp_max": v.climat.temp_max,
                 "temp_min": v.climat.temp_min,
-            } if v.climat else None,
+            } if hasattr(v, "climat") else None,
 
             "lieux": {
                 "nb_soins": v.lieux.nb_soins,
                 "nb_parcs": v.lieux.nb_parcs,
                 "nb_restaurants": v.lieux.nb_restaurants,
                 "nb_bars": v.lieux.nb_bars,
-            } if v.lieux else None,
+            } if hasattr(v, "lieux") else None,
 
             "loisirs": [
                 {
