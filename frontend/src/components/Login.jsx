@@ -1,10 +1,11 @@
 //login
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"
-
+import { useAuth } from "../context/AuthContext";
 
 
 export default function Login(){
+    const { login } = useAuth()
     const navigate = useNavigate()
     const [formData, setFormData] = useState ({
         username:"",
@@ -29,6 +30,7 @@ export default function Login(){
         const data = await response.json();
 
         if (response.ok) {
+            login(formData.username);
             console.log("Connecté !", data);
             navigate("/");
             

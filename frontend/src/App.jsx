@@ -1,4 +1,5 @@
 import { Route, Routes, Navigate } from "react-router-dom"
+import ProtectedRoute from "./components/ProtectedRoute"
 import FormCriteres from "./components/FormCriteres"
 import FormLieux from "./components/FormLieux"
 import FormCategories from "./components/FormCategories"
@@ -9,18 +10,22 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home"
 
+
 function App() {
   return (
     <Routes>
+      {/* Pages publiques accessibles à tous */}
       <Route path="/login" element={<Login/>}/>
       <Route path="/register" element={<Register/>}/>
-      <Route path="/" element={<Home/>}/>
-      <Route path="/categories" element={<FormCategories/>}/>
-      <Route path="/criteres" element={<FormCriteres/>}/>
-      <Route path="/lieux" element={<FormLieux/>}/>
-      <Route path="/est-important" element={<FormEstImportant/>}/>
-      <Route path="/loisirs" element={<FormLoisirs/>}/>
-      <Route path="/meteo" element={<FormMeteo/>}/>
+
+      {/* Pages protégées */}
+      <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
+      <Route path="/categories" element={<ProtectedRoute><FormCategories/></ProtectedRoute>}/>
+      <Route path="/criteres" element={<ProtectedRoute><FormCriteres/></ProtectedRoute>}/>
+      <Route path="/lieux" element={<ProtectedRoute><FormLieux/></ProtectedRoute>}/>
+      <Route path="/est-important" element={<ProtectedRoute><FormEstImportant/></ProtectedRoute>}/>
+      <Route path="/loisirs" element={<ProtectedRoute><FormLoisirs/></ProtectedRoute>}/>
+      <Route path="/meteo" element={<ProtectedRoute><FormMeteo/></ProtectedRoute>}/>
     </Routes>
   )
 }
